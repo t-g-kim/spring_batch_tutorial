@@ -1,4 +1,4 @@
-package com.example.springBatchTutorial.job;
+package com.example.springBatchTutorial.job.jobListenerConfig;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
@@ -12,44 +12,43 @@ import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @RequiredArgsConstructor
-public class HelloWorldJobConfig {
+public class JobListenerConfig {
 
-    @Autowired
-    private JobBuilderFactory jobBuilderFactory;
-
-    @Autowired
-    private StepBuilderFactory stepBuilderFactory;
+    private final JobBuilderFactory jobBuilderFactory;
+    private final StepBuilderFactory stepBuilderFactory;
 
     @Bean
-    public Job helloWorldJob() {
-        return jobBuilderFactory.get("helloWorldJob")
+    public Job jobListenerJob() {
+        return jobBuilderFactory.get("jobListenerJob")
                 .incrementer(new RunIdIncrementer())
-                .start(helloWorldStep())
+                .listener(new JobLoggerListener())
+                .start(jobListenerStep())
                 .build();
     }
 
     @JobScope
     @Bean
-    public Step helloWorldStep() {
-        return stepBuilderFactory.get("helloWorldStep")
-                .tasklet(helloWorldTaskLet())
+    public Step jobListenerStep() {
+        return stepBuilderFactory.get("jobListenerStep")
+                .tasklet(jobListenerTaskLet())
                 .build();
     }
 
     @StepScope // step하위에서 실행되기 때문에
     @Bean
-    public Tasklet helloWorldTaskLet() {
+    public Tasklet jobListenerTaskLet() {
         return new Tasklet() {
             @Override
             public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
-                System.out.println("Hello World Spring Batch");
-                return RepeatStatus.FINISHED;
+//                System.out.println("job listener Tasklet");
+//                return RepeatStatus.FINISHED;
+
+                throw new Exception("failed !!");
             }
         };
     }

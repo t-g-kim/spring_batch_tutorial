@@ -6,7 +6,7 @@ services:
     image: mysql:5.7
     environment:
       MYSQL_DATABASE: "spring_batch"
-      MYSQL_ROOT_PASSWORD: "password1234"
+      MYSQL_ROOT_PASSWORD: "1111"
       TZ: "Asia/Seoul"
     ports:
       - "3306:3306"
