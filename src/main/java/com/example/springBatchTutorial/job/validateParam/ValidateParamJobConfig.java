@@ -35,8 +35,8 @@ public class ValidateParamJobConfig {
     public Job validateParamJob(Step validateParamStep) {
         return jobBuilderFactory.get("validateParamJob")
                 .incrementer(new RunIdIncrementer())
-//                .validator(new FileParamValidator())
-                .validator(multipleValidator())
+                .validator(new FileParamValidator())
+//                .validator(multipleValidator())
                 .start(validateParamStep)
                 .build();
     }
@@ -52,7 +52,7 @@ public class ValidateParamJobConfig {
     @JobScope
     @Bean
     public Step validateParamStep(Tasklet validateParamTaskLet) {
-        return stepBuilderFactory.get("helloWorldStep")
+        return stepBuilderFactory.get("validateParamStep")
                 .tasklet(validateParamTaskLet)
                 .build();
     }
